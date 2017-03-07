@@ -1,0 +1,28 @@
+{
+  "name": "webtask-hacks",
+  "version": "0.0.0",
+  "description": "A collection of webtask-related hacks and ideas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggoodman/webtask-hacks.git"
+  },
+  "keywords": [
+    "webtask", "serverless", "function", "sandbox"
+  ],
+  "author": "Geoff Goodman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ggoodman/webtask-hacks/issues"
+  },
+  "homepage": "https://github.com/ggoodman/webtask-hacks#readme",
+  "dependencies": {
+    "async": "^2.1.5",
+    "boom": "^4.2.0",
+    "joi": "^10.2.2",
+    "wreck": "^10.0.0"
+  }
+}
