@@ -33,7 +33,9 @@ const workflowSchema = Joi.object()
     });
 
 
-exports.workflow = workflowCompiler;
+module.exports = {
+    compiler,
+};
 
 
 /**
@@ -42,7 +44,7 @@ exports.workflow = workflowCompiler;
  * @param {options} options
  * @param {function} cb callback having the form `function(error, webtaskFunction)`
  */
-function workflowCompiler(options, cb) {
+function compiler(options, cb) {
     return Async.waterfall([
         (next) => compileScript(options.script, options.nodejsCompiler, next),
         (schema, next) => validateSchema(schema, next),
