@@ -239,7 +239,7 @@ function compiler(options, cb) {
                 const start = Date.now();
                 const uri = `/${node.name}?${qs}`;
 
-                logger.debug(`Invoking the fanout node '${ node.name }'`);
+                logger.debug(`Invoking the sequence node '${ node.name }'`);
 
                 return void wreck.request(method, uri, { headers, payload }, (error, response) => {
                     const latency = Date.now() - start;
