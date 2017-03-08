@@ -39,3 +39,14 @@ The workflow compiler allows you to build compound webtasks that have one of two
     ```json
     {"webtask-hacks":"1.0.1"}
     ```
+
+4. Optionally, set the `wt-workflow-debug` metadata property to a number corresponding to the minimum level of logs that will be output to your webtask logs.
+
+    Supported levels are as follows:
+
+    ```
+    20: debug
+    30: info
+    40: warn
+    50: error
+    ```
