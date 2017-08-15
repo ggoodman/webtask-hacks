@@ -6,6 +6,12 @@ Object.defineProperty(module.exports, 'authenticate', {
     }
 });
 
+Object.defineProperty(module.exports, 'authenticateCron', {
+    get() {
+        return require('./middleware/authenticate_cron').middleware;
+    }
+});
+
 Object.defineProperty(module.exports, 'middleware', {
     get() {
         return require('./compilers/middleware').compiler;
