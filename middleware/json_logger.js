@@ -35,15 +35,15 @@ function installCustomLogger() {
         }
     });
 
-    const console = new Console.Console(stdout, stderr);
+    const customConsole = new Console.Console(stdout, stderr);
 
     // Attach the CLS namespace to the custom console instance
     // so that we can prevent this from being re-initialized
-    console.$ns = ns;
+    customConsole.$ns = ns;
 
     Object.defineProperty(global, 'console', {
         enumerable: true,
-        get: () => console,
+        get: () => customConsole,
     });
 
 
