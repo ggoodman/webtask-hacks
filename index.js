@@ -2,7 +2,7 @@
 
 Object.defineProperty(module.exports, 'authenticate', {
     get() {
-        return require('./middleware/authenticate').compiler;
+        return require('./middleware/authenticate').middleware;
     }
 });
 
