@@ -12,6 +12,12 @@ Object.defineProperty(module.exports, 'authenticateCron', {
     }
 });
 
+Object.defineProperty(module.exports, 'jsonLogger', {
+    get() {
+        return require('./middleware/json_logger').middleware;
+    }
+});
+
 Object.defineProperty(module.exports, 'middleware', {
     get() {
         return require('./compilers/middleware').compiler;
