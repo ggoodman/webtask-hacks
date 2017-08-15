@@ -4,35 +4,39 @@ const Console = require('console');
 const Continuation = require('continuation-local-storage');
 const Stream = require('stream');
 
-
 module.exports = {
     installCustomLogger,
     middleware,
 };
 
-
 function installCustomLogger() {
     // Prevent re-initialization
-    if (console.$ns) return console.$ns;
+    if (/* eslint no-console:off */ console.$ns) return console.$ns;
 
     const ns = Continuation.createNamespace('logger');
     const stderr = new Stream.Transform({
         transform(chunk, encoding, cb) {
-            cb(null, JSON.stringify({
-                chunk: chunk.slice(0, chunk.length - 1).toString('utf-8'),
-                requestId: ns.get('requestId'),
-                webtaskId: ns.get('webtaskId'),
-            }) + '\n');
-        }
+            cb(
+                null,
+                JSON.stringify({
+                    chunk: chunk.slice(0, chunk.length - 1).toString('utf-8'),
+                    requestId: ns.get('requestId'),
+                    webtaskId: ns.get('webtaskId'),
+                }) + '\n'
+            );
+        },
     });
     const stdout = new Stream.Transform({
         transform(chunk, encoding, cb) {
-            cb(null, JSON.stringify({
-                chunk: chunk.slice(0, chunk.length - 1).toString('utf-8'),
-                requestId: ns.get('requestId'),
-                webtaskId: ns.get('webtaskId'),
-            }) + '\n');
-        }
+            cb(
+                null,
+                JSON.stringify({
+                    chunk: chunk.slice(0, chunk.length - 1).toString('utf-8'),
+                    requestId: ns.get('requestId'),
+                    webtaskId: ns.get('webtaskId'),
+                }) + '\n'
+            );
+        },
     });
 
     const customConsole = new Console.Console(stdout, stderr);
@@ -45,7 +49,6 @@ function installCustomLogger() {
         enumerable: true,
         get: () => customConsole,
     });
-
 
     stderr.pipe(process.stderr);
     stdout.pipe(process.stdout);
