@@ -2,6 +2,7 @@
 
 const Debuglog = require('../lib/debuglog');
 const DefaultMiddleware = require('../lib/default_middleware');
+const Util = require('../lib/util');
 
 const META_PROP_MIDDLEWARE = 'wt-middleware';
 
@@ -13,9 +14,37 @@ function compiler(options, cb) {
     const debuglog = Debuglog.create(META_PROP_MIDDLEWARE, options.meta);
     const nodejsCompiler = options.nodejsCompiler;
     const script = options.script;
-    const middlewareSpecs = (options.meta[META_PROP_MIDDLEWARE] || '')
-        .split(/[;,]/)
-        .filter(Boolean);
+    const middlewareString = options.meta[META_PROP_MIDDLEWARE] || '';
+    const middlewareSpecs = [];
+
+    if (middlewareString) {
+        let jsonSpecs;
+        try {
+            jsonSpecs = JSON.parse(middlewareString);
+        } catch (__) {
+            // Ignore error
+        }
+
+        if (jsonSpecs) {
+            // The `wt-middleware` metadata is valid JSON
+            if (!Array.isArray(jsonSpecs)) {
+                const error = new Error(
+                    'Unexpected JSON wt-middleware metadata that does not represent an array'
+                );
+
+                debuglog(error.message);
+
+                return cb(error);
+            }
+
+            middlewareSpecs.push.apply(middlewareSpecs, jsonSpecs);
+        } else {
+            const csv = middlewareString.split(',').filter(Boolean);
+
+            // Not JSON; fallback to CSV
+            middlewareSpecs.push.apply(middlewareSpecs, csv);
+        }
+    }
 
     return cb(null, function middlewarePipeline(ctx, req, res) {
         const defaultMiddleware = DefaultMiddleware.create({
@@ -61,7 +90,7 @@ function compiler(options, cb) {
             nextMiddlewareIdx++;
 
             try {
-                const middlewareFn = resolveCompiler(middlewareSpec);
+                const middlewareFn = Util.resolveCompiler(middlewareSpec);
 
                 try {
                     return middlewareFn(req, res, invokeNextMiddleware);
@@ -136,16 +165,4 @@ function compiler(options, cb) {
             res.end(json);
         }
     });
-}
-
-function resolveCompiler(spec) {
-    // Already a function, no resolution to do.
-    if (typeof spec === 'function') return spec;
-
-    const idx = spec.indexOf('/');
-    const moduleName = idx > -1 ? spec.substring(0, idx) : spec;
-    const moduleExportName = idx > -1 ? spec.substring(idx + 1) : null;
-    const module = require(moduleName);
-
-    return moduleExportName ? module[moduleExportName] : module;
 }
