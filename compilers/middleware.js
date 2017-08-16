@@ -33,6 +33,9 @@ function compiler(options, cb) {
         // to do their own compilation.
         ctx.compiler = { nodejsCompiler, script };
 
+        // Attach the webtask context to the request at a well-known location
+        req.webtaskContext = ctx;
+
         let nextMiddlewareIdx = 0;
 
         return invokeNextMiddleware();
@@ -61,7 +64,7 @@ function compiler(options, cb) {
                 const middlewareFn = resolveCompiler(middlewareSpec);
 
                 try {
-                    return middlewareFn(ctx, req, res, invokeNextMiddleware);
+                    return middlewareFn(req, res, invokeNextMiddleware);
                 } catch (e) {
                     debuglog(
                         'Synchronous error running middleware "%s": %s',

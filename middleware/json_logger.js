@@ -56,7 +56,7 @@ function installCustomLogger() {
     return ns;
 }
 
-function middleware(ctx, req, res, next) {
+function middleware(req, res, next) {
     const ns = installCustomLogger();
 
     return ns.run(() => {

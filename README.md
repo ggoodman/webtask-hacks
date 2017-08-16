@@ -8,12 +8,13 @@ A collection of experiments and hacks for getting the most (and sometimes too mu
 
 The middleware compiler provides a mechanism to run any number of middleware prior to invoking a webtask.
 
-A middleware is a function exported by a node module having the signature `function(ctx, req, res, next)`, where:
+A middleware is a function exported by a node module having the signature `function(req, res, next)`, where:
 
-- `ctx` is a typical [webtask context object](https://webtask.io/docs/context) that is augmented with a `compiler` property. The `compiler` object is exposed so that a middleware can be implemented that supports [custom programming models](https://webtask.io/docs/webtask-compilers). The `compiler` property is an object that has `nodejsCompiler` and `script` properties where:
-  - `nodejsCompiler` is the node.js [compiler function provided to webtask compilers](https://webtask.io/docs/webtask-compilers)
-  - `script` is the underling webtask's code
-- `req` is the instance of `http.IncomingRequest` for the current request
+- `req` is the instance of `http.IncomingRequest` for the current request. It has a `req.webtaskContext` property:
+    - `req.webtaskContext` is a typical [webtask context object](https://webtask.io/docs/context) that is augmented with a `compiler` property. The `compiler` object is exposed so that a middleware can be implemented that supports [custom programming models](https://webtask.io/docs/webtask-compilers). The `compiler` property is an object that has `nodejsCompiler` and `script` properties where:
+        - `nodejsCompiler` is the node.js [compiler function provided to webtask compilers](https://webtask.io/docs/webtask-compilers)
+        - `script` is the underling webtask's code
+
 - `res` is the instance of `http.ServerResponse` for the current request
 - `next` is a function with the signature `function next(error)`. A middleware function may be designed to complete the response, in which case it can omit calling `next`. A middleware may also implement authentication logic, such as the [authentication]() middleware. In this case, the middleware might invoke `next` with an `Error`. If the error has a `statusCode` property, this will be used as the response status code. Otherwise, to allow control to go to the next middleware, or to the default middleware (which compiles and invokes the webtask code), the middleware can call `next()` with no arguments.
 

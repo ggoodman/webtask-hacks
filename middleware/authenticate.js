@@ -6,7 +6,9 @@ module.exports = {
     middleware,
 };
 
-function middleware(ctx, req, res, next) {
+function middleware(req, res, next) {
+    const ctx = req.webtaskContext;
+
     if (ctx.secrets && ctx.secrets[AUTH_SECRET_NAME]) {
         const match = (ctx.headers['authorization'] || '')
             .trim()
