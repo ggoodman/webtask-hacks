@@ -26,6 +26,7 @@
     "async": "^2.5.0",
     "boom": "^4.3.1",
     "continuation-local-storage": "^3.2.0",
+    "decompress": "^4.2.0",
     "joi": "^10.6.0",
     "wreck": "^12.2.3"
   },

@@ -18,6 +18,12 @@ Object.defineProperty(module.exports, 'jsonLogger', {
     },
 });
 
+Object.defineProperty(module.exports, 'unpack', {
+    get() {
+        return require('./middleware/unpack').middleware;
+    },
+});
+
 Object.defineProperty(module.exports, 'middleware', {
     get() {
         return require('./compilers/middleware').compiler;
