@@ -1,6 +1,6 @@
 {
   "name": "webtask-hacks",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A collection of webtask-related hacks and ideas",
   "main": "index.js",
   "scripts": {
