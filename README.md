@@ -94,3 +94,7 @@ The `webtask-hacks/authenticate` middleware provides a generic authentication so
 ### JSON logging
 
 The `webtask-hacks/jsonLogger` middleware augments the console object in Webtask so that all logic running later in the synchronous or asynchronous continuation will result in newline-delimited json having the format `{ chunk, requestId, webtaskId }` being emitted to the real-time logs. This may be useful for other middleware that might want to ship augmented logs to 3rd party services or to facilitate per-request logging by consumers of real-time logs.
+
+### Unpacker
+
+The `webtask-hacks/unpack` middleware supports running multi-file webtasks whose code is the `base64`-encoding of a zip, tarball or zipped tarball.
